@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TYPING LAB</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- START -->
+    <div id="screen-start" class="screen active">
+      <div class="lava-lamp lava-left">
+        <div class="lamp-glass">
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+        </div>
+        <div class="lamp-label">SPEED · LV.01</div>
+      </div>
+      <div class="lava-lamp lava-right">
+        <div class="lamp-glass">
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+        </div>
+        <div class="lamp-label">ACCURACY · LV.01</div>
+      </div>
+
+      <div class="start-hero">
+        <h1 class="logo"><img src="assets/logo.png" alt="TYPING LAB"></h1>
+        <p class="start-sub">Type. Let AI find your weakness.</p>
+      </div>
+      <div class="feature-cards">
+        <div class="feature-card">
+          <div class="feature-icon">⌨</div>
+          <div class="feature-title">今日の練習</div>
+          <div class="feature-desc">8問 / 約1〜2分で完了</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">あ</div>
+          <div class="feature-title">短文タイピング</div>
+          <div class="feature-desc">日本語ローマ字入力で計測</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✓</div>
+          <div class="feature-title">結果チェック</div>
+          <div class="feature-desc">速度・正確率・ミス傾向を確認</div>
+        </div>
+      </div>
+      <button id="btn-start" class="btn-primary">スタート</button>
+      <button id="btn-howto" class="btn-howto">使い方を見る</button>
+      <p class="key-hint">Space / Enter でスタート &nbsp;·&nbsp; 練習中は Esc で終了</p>
+    </div>
+
+    <!-- COUNTDOWN -->
+    <div id="countdown" class="countdown-overlay">
+      <div id="countdown-num" class="countdown-num"></div>
+    </div>
+
+    <!-- HOW TO USE MODAL -->
+    <div id="howto-modal" class="modal-overlay">
+      <div class="modal-content">
+        <button id="btn-close-howto" class="modal-close" aria-label="閉じる">×</button>
+        <h2 class="modal-title">使い方</h2>
+        <ol class="howto-steps">
+          <li><span class="step-num">1</span><div><b>スタートを押す</b><br>Space / Enter キーでもOK</div></li>
+          <li><span class="step-num">2</span><div><b>画面の文章をローマ字で入力</b><br>「し」は shi / si / ci など複数の打ち方に対応</div></li>
+          <li><span class="step-num">3</span><div><b>全8問を入力すると自動で計測完了</b><br>途中でやめたいときは Esc キー</div></li>
+          <li><span class="step-num">4</span><div><b>結果画面で速度・正確率・弱点を確認</b><br>ランクや遅いキーが表示されます</div></li>
+          <li><span class="step-num">5</span><div><b>「AI分析用テキストをコピー」を押す</b><br>結果データがまとめてコピーされます</div></li>
+          <li><span class="step-num">6</span><div><b>AIに貼り付けて分析してもらう</b><br>ChatGPT・Claude・Gemini などに貼るだけで、弱点と練習メニューを提案してくれます</div></li>
+        </ol>
+        <button id="btn-close-howto-2" class="modal-ok">閉じる</button>
+      </div>
+    </div>
+
+    <!-- TYPING -->
+    <div id="screen-typing" class="screen">
+      <div class="lava-lamp lava-left">
+        <div class="lamp-glass">
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+        </div>
+        <div class="lamp-label">SPEED · LV.01</div>
+      </div>
+      <div class="lava-lamp lava-right">
+        <div class="lamp-glass">
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+        </div>
+        <div class="lamp-label">ACCURACY · LV.01</div>
+      </div>
+
+      <div id="charge-wrap">
+        <div id="charge-label">練習データを計測中<span id="charge-dots"></span></div>
+        <div id="progress-bar">
+          <div id="progress-fill"></div>
+        </div>
+      </div>
+
+      <div id="live-stats">
+        <div class="stat-card">
+          <div class="stat-label">速度</div>
+          <div class="stat-value" id="stat-speed">0.0</div>
+          <div class="stat-unit">回/秒</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">正確率</div>
+          <div class="stat-value" id="stat-accuracy">--</div>
+          <div class="stat-unit">%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">ミス</div>
+          <div class="stat-value" id="stat-mistakes">0</div>
+          <div class="stat-unit">回</div>
+        </div>
+        <div class="stat-card" id="combo-card">
+          <div class="stat-label">COMBO</div>
+          <div class="stat-value" id="stat-combo">-</div>
+          <div class="stat-unit">連続</div>
+        </div>
+      </div>
+
+      <div id="text-container">
+        <div id="japanese-text"></div>
+        <div id="romaji-text">
+          <span id="romaji-done"></span><span id="romaji-cursor"></span><span id="romaji-rest"></span>
+        </div>
+        <div class="color-legend">
+          <span class="legend-item"><span class="dot dot-done"></span>入力済み</span>
+          <span class="legend-item"><span class="dot dot-cursor"></span>入力中</span>
+          <span class="legend-item"><span class="dot dot-rest"></span>未入力</span>
+          <span class="legend-item"><span class="dot dot-error"></span>ミス</span>
+        </div>
+      </div>
+
+      <div id="sentence-counter"></div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="screen-result" class="screen">
+      <div class="lava-lamp lava-left">
+        <div class="lamp-glass">
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+        </div>
+        <div class="lamp-label">SPEED · LV.01</div>
+      </div>
+      <div class="lava-lamp lava-right">
+        <div class="lamp-glass">
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+          <div class="lava-blob"></div>
+        </div>
+        <div class="lamp-label">ACCURACY · LV.01</div>
+      </div>
+
+      <div class="result-header">
+        <h2>結果</h2>
+        <div id="r-rank" class="rank-badge">-</div>
+      </div>
+      <p id="r-feedback" class="result-feedback"></p>
+      <div id="result-cards">
+        <div class="card">
+          <div class="card-label">正確率</div>
+          <div class="card-value" id="r-accuracy">--%</div>
+        </div>
+        <div class="card">
+          <div class="card-label">平均速度</div>
+          <div class="card-value" id="r-speed">--</div>
+          <div class="card-unit">回/秒</div>
+        </div>
+        <div class="card">
+          <div class="card-label">ミス数</div>
+          <div class="card-value" id="r-mistakes">--</div>
+        </div>
+        <div class="card">
+          <div class="card-label">総打鍵数</div>
+          <div class="card-value" id="r-keystrokes">--</div>
+        </div>
+      </div>
+      <div id="r-weak-section">
+        <div class="weak-title">弱点キー（遅い順）</div>
+        <div id="r-weak-kana" class="weak-kana-list"></div>
+      </div>
+      <p class="hint">ChatGPT・Claude・Gemini 等に貼り付けると、弱点と練習メニューを分析してもらえます</p>
+      <div class="result-buttons">
+        <button id="btn-copy-ai" class="btn-primary">AI分析用テキストをコピー</button>
+        <button id="btn-retry">もう一度</button>
+        <p class="key-hint">Space / Enter でもう一度</p>
+      </div>
+    </div>
+
+  </div>
+  <button id="btn-mute" class="mute-toggle" aria-label="サウンドのオン/オフ">🔊</button>
+  <script src="app.js"></script>
+</body>
+</html>
