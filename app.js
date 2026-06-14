@@ -477,6 +477,8 @@ const els = {
   countdown:       document.getElementById('countdown'),
   countdownNum:    document.getElementById('countdown-num'),
   btnMute:         document.getElementById('btn-mute'),
+  deviceWarning:   document.getElementById('device-warning'),
+  btnCloseWarning: document.getElementById('btn-close-warning'),
 };
 
 const screens = {
@@ -1112,6 +1114,30 @@ els.howtoModal.addEventListener('click', (e) => {
 
 els.btnMute.addEventListener('click', toggleSound);
 updateMuteButton();
+
+// ===== DEVICE WARNING =====
+function isMobileOrTablet() {
+  const ua = navigator.userAgent;
+  // 一般的なモバイル/タブレットのUA
+  const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+  // iPadOS 13+ は Macintosh としてUAを返すので maxTouchPoints で補正
+  const isIPadOS = navigator.maxTouchPoints > 1 && /Macintosh/i.test(ua);
+  // タッチ可能 + 画面幅が狭い場合もモバイル扱い
+  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const smallScreen = window.innerWidth < 1024;
+  return mobileRegex.test(ua) || isIPadOS || (isTouch && smallScreen);
+}
+
+if (isMobileOrTablet()) {
+  els.deviceWarning.classList.add('open');
+}
+els.btnCloseWarning.addEventListener('click', () => {
+  sfx.click();
+  els.deviceWarning.classList.remove('open');
+});
+els.deviceWarning.addEventListener('click', (e) => {
+  if (e.target === els.deviceWarning) els.deviceWarning.classList.remove('open');
+});
 
 document.addEventListener('keydown', (e) => {
   if (isHowtoOpen()) {

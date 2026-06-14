@@ -262,6 +262,31 @@ button:hover {
   100% { transform: scale(0.85); opacity: 0; }
 }
 
+/* ---- Device warning modal ---- */
+.device-warning-content {
+  text-align: center;
+  max-width: 440px;
+}
+
+.device-warning-icon {
+  font-size: 3.5rem;
+  margin-bottom: 0.6rem;
+  text-shadow: 0 0 30px rgba(192, 128, 255, 0.55);
+  color: #d8b0ff;
+}
+
+.device-warning-text {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: #b0c0d0;
+  margin-bottom: 1.6rem;
+}
+
+.device-warning-text b {
+  color: #d8b0ff;
+  font-weight: 600;
+}
+
 /* ---- How-to modal ---- */
 .modal-overlay {
   display: none;
